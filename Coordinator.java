@@ -2,9 +2,16 @@ package java.eyeLight;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Scanner;
 import java.util.StringTokenizer;
+
+/**
+ * 
+ * @author Shashin Gupta
+ *
+ */
 
 public class Coordinator {
 
@@ -13,7 +20,7 @@ public class Coordinator {
 	private static LinkedList<String> cost_hurricanes, cost_wildfires;
 	private static int[][] years;
 	private static FileInterpreter[] fis;
-	
+
 	static {
 		cost_hurricanes = new LinkedList<String>();
 		cost_wildfires = new LinkedList<String>();
@@ -21,7 +28,7 @@ public class Coordinator {
 		fis[0] = new FileInterpreter(WILDFIRE_PATH + "Costs/");
 		fis[1] = new FileInterpreter(HURRICANE_PATH + "Costs/");
 		years = new int[8][];
-		
+
 		// Soon to be implemented with the text files
 		/**
 		fis[2] = new FileInterpreter(WILDFIRE_PATH + "");
@@ -30,47 +37,67 @@ public class Coordinator {
 		fis[5] = new FileInterpreter(HURRICANE_PATH + "");
 		fis[6] = new FileInterpreter(WILDFIRE_PATH + "");
 		fis[7] = new FileInterpreter(HURRICANE_PATH + "");
-		**/
+		 **/
 	}
+
+	/**
+	 * 
+	 * Index Association
+	 * 
+	 * 0 -> Cost for Wildfires
+	 * 1 -> Cost for Hurricanes
+	 * 
+	 */
 	
 	public static void main(String[] args) {
 		cost_wildfires = fis[0].load();
 		cost_hurricanes = fis[1].load();
+		years[0] = getQuantitativeData(cost_wildfires, cost_wildfires.size()); // the size will be changed once the data rolls in
+		years[1] = getQuantitativeData(cost_hurricanes, cost_hurricanes.size()); // the size will be changed once the data rolls in
+
+	}
+
+	private static int[] getQuantitativeData(LinkedList<String> data, int size) {
+		int[] numericalData = new int[data.size()];
 		
+		Iterator<String> iter = data.iterator();
 		
+		int i = 0;
+		while(iter.hasNext()) numericalData[i] = Integer.parseInt(iter.next());
+		
+		return numericalData;
 	}
 	
 	private static class FileInterpreter {
 		private Scanner sc;
-		
+
 		public FileInterpreter(String path) {
 			try {
 				sc = new Scanner(new File(path));
 			} 
 			catch (FileNotFoundException e) {
 				System.out.println("File: " + path + "raised FileNotFoundException");
-				
+
 			}
 		}
-		
+
 		public LinkedList<String> load() {
-			
+
 			LinkedList<String> tokens = new LinkedList<String>();
 			StringTokenizer st;
 			String line;
-			
+
 			while(sc.hasNextLine()) {
 				line = sc.nextLine();
 				st = new StringTokenizer(line, " ,.\":;");
-				
+
 				while (st.hasMoreTokens()) tokens.add(st.nextToken());
-				
+
 			}
-			
+
 			return tokens;
 		}
-		
+
 	}
 
-	
 }
