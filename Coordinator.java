@@ -17,13 +17,13 @@ public class Coordinator {
 
 	public static final String WILDFIRE_PATH = "java/Wildfire_Information/";
 	public static final String HURRICANE_PATH = "java/Hurricane_Information/";
-	private static LinkedList<String> cost_hurricanes, cost_wildfires;
+	private static LinkedList<DataSet> cost_hurricanes, cost_wildfires;
 	private static int[][] years;
 	private static FileInterpreter[] fis;
 
 	static {
-		cost_hurricanes = new LinkedList<String>();
-		cost_wildfires = new LinkedList<String>();
+		cost_hurricanes = new LinkedList<DataSet>();
+		cost_wildfires = new LinkedList<DataSet>();
 		fis = new FileInterpreter[8];
 		fis[0] = new FileInterpreter(WILDFIRE_PATH + "Costs/");
 		fis[1] = new FileInterpreter(HURRICANE_PATH + "Costs/");
@@ -52,19 +52,23 @@ public class Coordinator {
 	public static void main(String[] args) {
 		cost_wildfires = fis[0].load();
 		cost_hurricanes = fis[1].load();
-		years[0] = getQuantitativeData(cost_wildfires, cost_wildfires.size()); // the size will be changed once the data rolls in
-		years[1] = getQuantitativeData(cost_hurricanes, cost_hurricanes.size()); // the size will be changed once the data rolls in
+		years[0] = getQuantitativeData(cost_wildfires, cost_wildfires.size(), true); // the size will be changed once the data rolls in
+		years[1] = getQuantitativeData(cost_hurricanes, cost_hurricanes.size(), true); // the size will be changed once the data rolls in
 
 	}
 
-	private static int[] getQuantitativeData(LinkedList<String> data, int size) {
+	/**
+	 * Has to be fixed
+	**/
+	
+	private static int[] getQuantitativeData(LinkedList<DataSet> data, int size, boolean year) {
 		int[] numericalData = new int[data.size()];
 		
-		Iterator<String> iter = data.iterator();
+		Iterator<DataSet> iter = data.iterator();
 		
 		int i = 0;
-		while(iter.hasNext()) numericalData[i] = Integer.parseInt(iter.next());
-		
+		if (year) while(iter.hasNext()) numericalData[i] = iter.next().getYear();
+		else while(iter.hasNext()) numericalData[i] = iter.next().getData();
 		return numericalData;
 	}
 	
@@ -81,18 +85,21 @@ public class Coordinator {
 			}
 		}
 
-		public LinkedList<String> load() {
+		public LinkedList<DataSet> load() {
 
-			LinkedList<String> tokens = new LinkedList<String>();
+			LinkedList<DataSet> tokens = new LinkedList<DataSet>();
 			StringTokenizer st;
 			String line;
+			int year, data;
 
+			sc.nextLine();
 			while(sc.hasNextLine()) {
 				line = sc.nextLine();
 				st = new StringTokenizer(line, " ,.\":;");
 
-				while (st.hasMoreTokens()) tokens.add(st.nextToken());
-
+				year = Integer.parseInt(st.nextToken());
+				data = Integer.parseInt(st.nextToken());
+				tokens.add(new DataSet(year, data));
 			}
 
 			return tokens;
