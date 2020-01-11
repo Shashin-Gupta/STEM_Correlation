@@ -19,6 +19,7 @@ public class Coordinator {
 	public static final String HURRICANE_PATH = "java/Hurricane_Information/";
 	private static LinkedList<DataSet> cost_hurricanes, cost_wildfires;
 	private static int[][] years;
+	private static int[][] data;
 	private static FileInterpreter[] fis;
 
 	static {
@@ -27,8 +28,9 @@ public class Coordinator {
 		fis = new FileInterpreter[8];
 		fis[0] = new FileInterpreter(WILDFIRE_PATH + "Costs/");
 		fis[1] = new FileInterpreter(HURRICANE_PATH + "Costs/");
-		years = new int[8][];
-
+		years = new int[8][]; // The number eight is just an approximation. This may be changed later depending on how much more/less we use
+		data = new int[8][];
+		
 		// Soon to be implemented with the text files
 		/**
 		fis[2] = new FileInterpreter(WILDFIRE_PATH + "");
@@ -42,7 +44,7 @@ public class Coordinator {
 
 	/**
 	 * 
-	 * Index Association
+	 * Index Dictionary
 	 * 
 	 * 0 -> Cost for Wildfires
 	 * 1 -> Cost for Hurricanes
@@ -52,16 +54,13 @@ public class Coordinator {
 	public static void main(String[] args) {
 		cost_wildfires = fis[0].load();
 		cost_hurricanes = fis[1].load();
-		years[0] = getQuantitativeData(cost_wildfires, cost_wildfires.size(), true); // the size will be changed once the data rolls in
-		years[1] = getQuantitativeData(cost_hurricanes, cost_hurricanes.size(), true); // the size will be changed once the data rolls in
-
+		years[0] = getQuantitativeData(cost_wildfires, true); 
+		years[1] = getQuantitativeData(cost_hurricanes, true); 
+		data[0] = getQuantitativeData(cost_wildfires, false);
+		data[1] = getQuantitativeData(cost_hurricanes, false);
 	}
 
-	/**
-	 * Has to be fixed
-	**/
-	
-	private static int[] getQuantitativeData(LinkedList<DataSet> data, int size, boolean year) {
+	private static int[] getQuantitativeData(LinkedList<DataSet> data, boolean year) {
 		int[] numericalData = new int[data.size()];
 		
 		Iterator<DataSet> iter = data.iterator();
