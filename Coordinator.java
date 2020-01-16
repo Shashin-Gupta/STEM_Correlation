@@ -10,6 +10,7 @@ import java.util.StringTokenizer;
 /**
  * 
  * @author Shashin Gupta
+ * @category Synopsis Science Fair
  *
  */
 
@@ -17,7 +18,8 @@ public class Coordinator {
 
 	public static final String WILDFIRE_PATH = "java/Wildfire_Information/";
 	public static final String HURRICANE_PATH = "java/Hurricane_Information/";
-	private static LinkedList<DataSet> cost_hurricanes, cost_wildfires;
+	private static LinkedList<DataSet> cost_hurricanes, cost_wildfires, count_hurricanes, count_wildfires,
+									   deaths_hurricanes, deaths_wildfires, acresBurned_wildfires, intensity_hurricanes;
 	private static int[][] years;
 	private static int[][] data;
 	private static FileInterpreter[] fis;
@@ -32,8 +34,8 @@ public class Coordinator {
 		fis[3] = new FileInterpreter(HURRICANE_PATH + "HurrianeCounts.txt");
 		fis[4] = new FileInterpreter(WILDFIRE_PATH + "WildfireFatalities.txt");
 		fis[5] = new FileInterpreter(HURRICANE_PATH + "HurrianeDeaths.txt");
-		fis[6] = new FileInterpreter(WILDFIRE_PATH + "WildfireAcresBurned.txt");
-		fis[7] = new FileInterpreter(HURRICANE_PATH + "HurricaneIntensity.txt");
+		// fis[6] = new FileInterpreter(WILDFIRE_PATH + "WildfireAcresBurned.txt");
+		// fis[7] = new FileInterpreter(HURRICANE_PATH + "HurricaneIntensity.txt");
 		years = new int[8][]; // The number eight is just an approximation. This may be changed later depending on how much more/less we use
 		data = new int[8][];
 	}
@@ -44,8 +46,16 @@ public class Coordinator {
 	 * 
 	 * 0 -> Cost for Wildfires
 	 * 1 -> Cost for Hurricanes
-	 * ``````````````````````````````````````
+	 * 2 -> Wildfire Count
+	 * 3 -> Hurricane Count
+	 * 4 -> Wildfire Fatalities
+	 * 5 -> Hurricane Fatalities
+	 * 6 -> Wildfire Acres Burned
+	 * 7 -> Hurricane Intensity
+	 * 
 	 */
+	
+	// For 6 and 7 we find no way to compare the data in a way that works so we decided to just leave it h
 	
 	public static void main(String[] args) {
 		cost_wildfires = fis[0].load();
@@ -54,6 +64,28 @@ public class Coordinator {
 		years[1] = getQuantitativeData(cost_hurricanes, true); 
 		data[0] = getQuantitativeData(cost_wildfires, false);
 		data[1] = getQuantitativeData(cost_hurricanes, false);
+		
+		count_wildfires = fis[2].load();
+		count_hurricanes = fis[3].load();
+		years[2] = getQuantitativeData(count_wildfires, true); 
+		years[3] = getQuantitativeData(count_hurricanes, true); 
+		data[2] = getQuantitativeData(count_wildfires, false);
+		data[3] = getQuantitativeData(count_hurricanes, false);
+		
+		deaths_wildfires = fis[4].load();
+		deaths_hurricanes = fis[5].load();
+		years[4] = getQuantitativeData(deaths_wildfires, true); 
+		years[5] = getQuantitativeData(deaths_hurricanes, true); 
+		data[4] = getQuantitativeData(deaths_wildfires, false);
+		data[5] = getQuantitativeData(deaths_hurricanes, false);
+		
+		acresBurned_wildfires = fis[6].load();
+		intensity_hurricanes = fis[7].load();
+		years[6] = getQuantitativeData(acresBurned_wildfires, true); 
+		years[7] = getQuantitativeData(intensity_hurricanes, true); 
+		data[6] = getQuantitativeData(acresBurned_wildfires, false);
+		data[7] = getQuantitativeData(intensity_hurricanes, false);
+		
 	}
 
 	private static int[] getQuantitativeData(LinkedList<DataSet> data, boolean year) {
