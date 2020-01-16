@@ -26,20 +26,16 @@ public class Coordinator {
 		cost_hurricanes = new LinkedList<DataSet>();
 		cost_wildfires = new LinkedList<DataSet>();
 		fis = new FileInterpreter[8];
-		fis[0] = new FileInterpreter(WILDFIRE_PATH + "Costs/");
-		fis[1] = new FileInterpreter(HURRICANE_PATH + "Costs/");
+		fis[0] = new FileInterpreter(WILDFIRE_PATH + "WildfireCostOfSupression.txt");
+		fis[1] = new FileInterpreter(HURRICANE_PATH + "HurrianeCosts.txt");
+		fis[2] = new FileInterpreter(WILDFIRE_PATH + "WildfireCount.txt");
+		fis[3] = new FileInterpreter(HURRICANE_PATH + "HurrianeCounts.txt");
+		fis[4] = new FileInterpreter(WILDFIRE_PATH + "WildfireFatalities.txt");
+		fis[5] = new FileInterpreter(HURRICANE_PATH + "HurrianeDeaths.txt");
+		fis[6] = new FileInterpreter(WILDFIRE_PATH + "WildfireAcresBurned.txt");
+		fis[7] = new FileInterpreter(HURRICANE_PATH + "HurricaneIntensity.txt");
 		years = new int[8][]; // The number eight is just an approximation. This may be changed later depending on how much more/less we use
 		data = new int[8][];
-		
-		// Soon to be implemented with the text files
-		/**
-		fis[2] = new FileInterpreter(WILDFIRE_PATH + "");
-		fis[3] = new FileInterpreter(HURRICANE_PATH + "");
-		fis[4] = new FileInterpreter(WILDFIRE_PATH + "");
-		fis[5] = new FileInterpreter(HURRICANE_PATH + "");
-		fis[6] = new FileInterpreter(WILDFIRE_PATH + "");
-		fis[7] = new FileInterpreter(HURRICANE_PATH + "");
-		 **/
 	}
 
 	/**
@@ -48,7 +44,7 @@ public class Coordinator {
 	 * 
 	 * 0 -> Cost for Wildfires
 	 * 1 -> Cost for Hurricanes
-	 * 
+	 * ``````````````````````````````````````
 	 */
 	
 	public static void main(String[] args) {
